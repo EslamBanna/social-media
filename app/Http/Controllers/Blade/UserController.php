@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Blade;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\FriendServices;
 use App\Services\UserServices;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -17,10 +18,12 @@ class UserController extends Controller
     public function index($id)
     {
         $user = User::find($id);
+        $friendServices = new FriendServices();
+        $friends = $friendServices->frindes($id)['data'];
         if (!$user) {
             return redirect()->back();
         }
-        return view('profile.index', compact('user'));
+        return view('profile.index', compact('user', 'friends'));
     }
 
     public function edit()

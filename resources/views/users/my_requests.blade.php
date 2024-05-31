@@ -10,7 +10,7 @@
                 <div class="tab-content p-0">
 
                     <div class="tab-pane fade active show" id="profile-friends">
-                        <div class="m-b-10"><b>New Friend List ({{ $users->count() }})</b></div>
+                        <div class="m-b-10"><b>My Friend Requests List ({{ $users->count() }})</b></div>
 
                         <ul class="friend-list clearfix">
                             @foreach ($users as $user)
@@ -20,9 +20,17 @@
                                         <div class="friend-info">
                                             <h4>{{ $user->name }}</h4>
                                         </div>
-                                        <a class="btn btn-primary" href="{{ route('send-friend-request', $user->id) }}">
-                                            Send Request
-                                        </a>
+                                        <div>
+                                            <br />
+                                            <form action="{{ route('remove.request',$user->id) }}" method="POST"
+                                                style="display: inline-block">
+                                                @csrf
+                                                <button class="btn btn-danger" type="submit">
+                                                    Remove
+                                                </button>
+                                            </form>
+                                        </div>
+
                                     </a>
                                 </li>
                             @endforeach

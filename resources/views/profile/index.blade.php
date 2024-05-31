@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('css')
+    @include('users.css')
+@endsection
 @section('content')
 <section class="bg-light">
     <div class="container">
@@ -42,7 +45,7 @@
                 </div>
             </div>
             <div class="col-lg-12">
-              
+              @include('profile.friends')
             </div>
         </div>
     </div>

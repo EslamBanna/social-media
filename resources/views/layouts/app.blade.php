@@ -56,11 +56,6 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('new.users')}}">
-                                    <i class="bi bi-person-add"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile', Auth::user()->id) }}">
                                     <i class="bi bi-person-circle"></i>
                                 </a>
@@ -80,6 +75,10 @@
                                 <div class="dropdown">
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{ route('home') }}">Home</a>
+                                        <a class="dropdown-item" href="{{route('new.users')}}">Add New Users</a>
+                                        <a class="dropdown-item" href="{{route('new.users.requests')}}">Friends Requests</a>
+                                        <a class="dropdown-item" href="{{route('my.requests')}}">My Requests</a>
+                                        
                                         <a class="dropdown-item"
                                             href="{{ route('profile', Auth::user()->id) }}">Profile</a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
