@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    @yield('css')
 </head>
 
 <body>
@@ -53,17 +55,23 @@
                                 </li>
                             @endif
                         @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('profile', Auth::user()->id)}}"> 
-                                <i class="bi bi-person-circle"></i>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('new.users')}}">
+                                    <i class="bi bi-person-add"></i>
                                 </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> 
-                                <i class="bi bi-chat-dots"></i>
-                                {{-- <span id="messages_count"> 0</span> --}}
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('profile', Auth::user()->id) }}">
+                                    <i class="bi bi-person-circle"></i>
                                 </a>
-                        </li>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="bi bi-chat-dots"></i>
+                                    {{-- <span id="messages_count"> 0</span> --}}
+                                </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -71,8 +79,9 @@
                                 </a>
                                 <div class="dropdown">
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('home')}}">Home</a>
-                                        <a class="dropdown-item" href="{{route('profile', Auth::user()->id)}}">Profile</a>
+                                        <a class="dropdown-item" href="{{ route('home') }}">Home</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('profile', Auth::user()->id) }}">Profile</a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Friend;
+use App\Models\FriendRequest;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -78,6 +80,21 @@ class UserServices
         $response = [
             'status' => true,
             'error' => 'success'
+        ];
+        return $response;
+    }
+
+    public function newUsers(){
+        $user_id = Auth::user()->id;
+        $firends_id_temp_1 = Friend::where('f_user_id', $user_id)->pluck('s_user_id');
+        $firends_id_temp_2 = Friend::where('s_user_id', $user_id)->pluck('f_user_id');
+        $firends_id_temp_3 = FriendRequest::where('sender_user_id', $user_id)->pluck('reciver_user_id');
+        $firends_id_temp_4 = FriendRequest::where('reciver_user_id', $user_id)->pluck('sender_user_id');
+        $firends_id = array_merge([$user_id],$firends_id_temp_1->all(), $firends_id_temp_2->all(), $firends_id_temp_3->all(), $firends_id_temp_4->all());
+        $users = User::whereNotIn('id', $firends_id)->paginate(15);
+        $response = [
+            'status' => true,
+            'data' => $users
         ];
         return $response;
     }

@@ -67,4 +67,15 @@ class UserController extends Controller
             return $e->getMessage();
         }
     }
+
+    public function newUsers()
+    {
+        try {
+            $userService = new UserServices();
+            $users = $userService->newUsers()['data'];
+            return view('users.new_users', compact('users'));
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

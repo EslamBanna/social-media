@@ -11,11 +11,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('profile/{id}', [UserController::class, 'index'])->name('profile');
     Route::get('profile-edit', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('profile/update', [UserController::class, 'update'])->name('profile.update');
     Route::get('profile/password/edit', [UserController::class, 'editPassword'])->name('profile.edit.password');
     Route::post('profile/password/update', [UserController::class, 'updatePassword'])->name('profile.update.password');
+
+    Route::get('new-users', [UserController::class, 'newUsers'])->name('new.users');
 });
