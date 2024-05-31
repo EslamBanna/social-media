@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo',
+        'bio'
     ];
 
     /**
@@ -43,5 +45,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getPhotoAttribute($value)
+    {
+        if ($value == null) {
+            return asset('/defualt_profile_picture.png');
+        } else {
+            return asset('/images/users/' . $value);
+        }
     }
 }
