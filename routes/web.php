@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Blade\FriendRequestController;
+use App\Http\Controllers\Blade\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Blade\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -27,4 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('send-friend-request/{id}', [FriendRequestController::class, 'sendRequest'])->name('send-friend-request');
     Route::post('request-response/{userId}/{response}', [FriendRequestController::class, 'responseOnRequest'])->name('request-response');
     Route::post('remove-request/{userId}', [FriendRequestController::class, 'removeRequest'])->name('remove.request');
+
+    Route::get('create-post', [PostController::class, 'create'])->name('post.create');
+    Route::post('create-post', [PostController::class, 'store'])->name('posts.store');
 });

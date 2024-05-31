@@ -75,6 +75,7 @@
                                 <div class="dropdown">
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{ route('home') }}">Home</a>
+                                        <a class="dropdown-item" href="{{ route('post.create') }}">Publish New Post</a>
                                         <a class="dropdown-item" href="{{route('new.users')}}">Add New Users</a>
                                         <a class="dropdown-item" href="{{route('new.users.requests')}}">Friends Requests</a>
                                         <a class="dropdown-item" href="{{route('my.requests')}}">My Requests</a>

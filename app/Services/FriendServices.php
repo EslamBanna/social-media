@@ -6,11 +6,7 @@ use App\Models\Friend;
 use App\Models\FriendRequest;
 use App\Models\User;
 use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class FriendServices
 {
@@ -19,7 +15,6 @@ class FriendServices
     public function sendRequest($userId)
     {
         $user = Auth::user();
-        // $friend = FriendRequest::
         $friend = FriendRequest::where(function ($q) use ($userId, $user) {
             $q->where('sender_user_id', $user->id)->where('receiver_user_id', $userId);
         })->orWhere(function ($q) use ($userId, $user) {
@@ -59,11 +54,17 @@ class FriendServices
         ];
         return $response;
     }
-    public function frindes($user_id)
+
+    public function frindesIds($user_id)
     {
         $friends_temp_1 = Friend::where('f_user_id', $user_id)->pluck('s_user_id');
         $friends_temp_2 = Friend::where('s_user_id', $user_id)->pluck('f_user_id');
         $friends_ids = array_merge($friends_temp_1->all(), $friends_temp_2->all());
+        return $friends_ids;
+    }
+    public function frindes($user_id)
+    {
+        $friends_ids = $this->frindesIds($user_id);
         $friends = User::whereIn('id', $friends_ids)->paginate(15);
         $response = [
             'status' => true,
@@ -97,7 +98,8 @@ class FriendServices
         return $response;
     }
 
-    public function removeRequest($userId){
+    public function removeRequest($userId)
+    {
         $request = FriendRequest::where('receiver_user_id', $userId)->where('sender_user_id', Auth::user()->id)->first();
         $response = [''];
         if (!$request) {

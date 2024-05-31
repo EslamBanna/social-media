@@ -51,7 +51,8 @@ class User extends Authenticatable
     {
         if ($value == null) {
             return asset('/defualt_profile_picture.png');
-        } else {
+        } 
+        else {
             return asset('/images/users/' . $value);
         }
     }
