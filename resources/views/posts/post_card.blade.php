@@ -52,12 +52,16 @@
                         @if ($post->user_id == Auth::user()->id)
                         <div class="row text-center">
                             <div class="col-2">
-                                <a href="" class="btn btn-primary p-2">
+                                <a href="{{route('posts.edit', $post->id)}}" class="btn btn-primary p-2">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a href="" class="btn btn-danger p-2">
-                                    <i class="bi bi-trash3"></i>
-                                </a>
+                                <form action="{{route('posts.delete', $post->id)}}" method="POST" style="display: inline-block" id="deletePost{{$post->id}}">
+                                    @csrf
+                                    <a class="btn btn-danger p-2" onclick="deletePost({{$post->id}})">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </form>
+                           
                             </div>
                         </div>
                     @endif

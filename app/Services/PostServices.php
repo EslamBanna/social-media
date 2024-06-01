@@ -65,4 +65,68 @@ class PostServices
         ];
         return $response;
     }
+
+    public function updatePost(Request $request, $postId)
+    {
+        $response = [];
+        $post = Post::find($postId);
+        if (!$post) {
+            $response = [
+                'status' => false,
+                'code' => 404,
+                'error' => 'not found'
+            ];
+            return $response;
+        }
+        $validator = Validator::make($request->all(), [
+            'content' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = [
+                'status' => false,
+                'error' => $validator->errors()
+            ];
+            return $response;
+        }
+
+        $post->update([
+            'content' => $request->content
+        ]);
+        if ($request->has('images')) {
+            $post->images()->delete();
+            foreach ($request->images as $image) {
+                $img = $this->saveImage($image, 'posts');
+                PostImage::create([
+                    'post_id' => $post->id,
+                    'image' => $img
+                ]);
+            }
+        }
+        $response = [
+            'status' => true,
+            'data' => 'success'
+        ];
+        return $response;
+    }
+
+    public function deletePost($postId)
+    {
+        $response = [];
+        $post = Post::find($postId);
+        if (!$post) {
+            $response = [
+                'status' => false,
+                'code' => 404,
+                'error' => 'not found'
+            ];
+            return $response;
+        }
+        $post->images()->delete();
+        $post->delete();
+        $response = [
+            'status' => true,
+            'data' => 'success'
+        ];
+        return $response;
+    }
 }

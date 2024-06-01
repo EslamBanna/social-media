@@ -1,9 +1,17 @@
 @section('css')
     @include('posts.css')
 @endsection
-    @include('posts.post_card')
+@include('posts.post_card')
 @section('script')
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function deletePost(id) {
+            let response = confirm('are you sure');
+            if (response == true) {
+                $('#deletePost' + id).submit();
+            }
+        }
+    </script>
 @endsection
