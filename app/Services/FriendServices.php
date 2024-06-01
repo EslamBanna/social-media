@@ -25,6 +25,8 @@ class FriendServices
                 'sender_user_id' => $user->id,
                 'receiver_user_id' => $userId,
             ]);
+            $notification_contetnt = 'User ' . Auth::user()->name . ' Send You A Friend Request';
+            addNotification($userId, $user->id, null, $notification_contetnt, 2);
         }
 
         $response = [
@@ -89,6 +91,8 @@ class FriendServices
                 'f_user_id' => $userId,
                 's_user_id' => Auth::user()->id
             ]);
+            $notification_contetnt = 'User ' . Auth::user()->name . ' Accept Your Friend Request';
+            addNotification($userId, Auth::user()->id, null, $notification_contetnt, 3);
         }
         $request->delete();
         $response = [

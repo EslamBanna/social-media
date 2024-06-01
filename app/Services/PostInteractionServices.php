@@ -40,7 +40,8 @@ class PostInteractionServices
                 'user_id' => Auth::user()->id,
                 'post_id' => $postId
             ]);
-            // fire event
+            $notification_contetnt = 'New Like On Your Post From User ' . Auth::user()->name;
+            addNotification($post->user_id,null,$postId,$notification_contetnt,1);
         }
         $likes_count = $post->likes()->count();
         $response = [
@@ -106,7 +107,8 @@ class PostInteractionServices
                 'post_id' => $postId,
                 'comment' => $request->comment
             ]);
-            // fire event
+            $notification_contetnt = 'New Comment On Your Post From User ' . Auth::user()->name;
+            addNotification($post->user_id,null,$postId,$notification_contetnt,0);
         $response = [
             'status' => true,
             'code' => 200,
