@@ -42,8 +42,15 @@
                                    <p class="card-text">{{ $post->content }}</p>
                                    <div class="d-flex justify-content-between align-items-center">
                                        <div>
-                                           <i class="fas fa-heart"></i> {{ $post->likes_count }} Likes
-                                           <button class="btn btn-sm btn-outline-primary">Like</button>
+                                           <i class="fas fa-heart"></i>
+                                           <a href="{{ route('posts.likes', $post->id) }}">
+                                               {{ $post->likes_count }} Likes
+                                           </a>
+                                           <form action="{{ route('posts.like', $post->id) }}" method="POST"
+                                               style="display: inline-block">
+                                               @csrf
+                                               <button type="submit" class="btn btn-sm btn-outline-primary">Like</button>
+                                           </form>
                                        </div>
                                    </div>
                                </div>
@@ -69,40 +76,14 @@
                    </div>
                </div>
            </div>
-           <div class="row mt-4">
-               <div class="col-12">
-                   <h3>Comments</h3>
-                   <div class="comments">
-                       @foreach ($post->comments as $comment)
-                           <div class="comment mb-3">
-                               <div class="row">
-                                   <div class="col-2">
-                                       <img src="{{ $comment->user->photo }}"
-                                           alt="{{ $comment->user->name }}'s Profile Picture" class=" rounded-circle"
-                                           width="100" height="100">
-                                   </div>
-                                   <div class="col-10">
-                                       <h5 class="comment-author">{{ $comment->user->name }}</h5>
-                                       <p class="comment-text">{{ $comment->comment }}</p>
-                                       <p class="comment-date text-muted">
-                                           <small>{{ $comment->created_at->format('Y-m-d H:i') }}</small></p>
-                                   </div>
-                               </div>
-                           </div>
-                           <hr>
-                       @endforeach
-                       <div class="new-comment">
-                           <label for="new-comment-input">Add a new comment:</label>
-                           <textarea id="new-comment-input" rows="3"></textarea>
-                           <button onclick="addComment()">Submit</button>
-                       </div>
-                   </div>
-               </div>
+           <div id="comments">
+               @include('posts.comments_section')
            </div>
        </div>
    @endsection
    @section('script')
-       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+       <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+           integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
        <script>
@@ -114,19 +95,22 @@
            }
 
            function addComment() {
-               const commentInput = document.getElementById('new-comment-input');
-               const newComment = commentInput.value.trim();
-
-               if (newComment !== '') {
-                   const commentsList = document.querySelector('.comments');
-                   const newCommentElement = document.createElement('li');
-                   newCommentElement.innerHTML = `
-        <h4>New Comment</h4>
-        <p>${newComment}</p>
-      `;
-                   commentsList.appendChild(newCommentElement);
-                   commentInput.value = '';
-               }
+               $.ajax({
+                   url: '{{ url('/post-comment') }}' + '/' + {{ $post->id }},
+                   type: 'post',
+                   data: {
+                       'comment': $('#new-comment-input').val()
+                   },
+                   headers: {
+                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   success: function(data) {
+                       $('#comments').html(data.view);
+                   },
+                   error: function(data) {
+                       console.log('Error:', data);
+                   }
+               });
            }
        </script>
    @endsection

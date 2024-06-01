@@ -81,12 +81,12 @@ class PostController extends Controller
 
     public function show($id){
         try{
-            $post = Post::find($id);
+            $post = Post::withCount(['likes', 'comments'])->find($id);
+            $comments = PostComment::where('post_id', $id)->get();
             if(! $post){
                 return redirect()->back();
             }
-            $comments = PostComment::where('post_id', $id)->get();
-            return view('posts.show', compact('post'));
+            return view('posts.show', compact('post', 'comments'));
         }catch(\Exception $e){
             return $e->getMessage();
         }

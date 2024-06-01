@@ -34,37 +34,47 @@
                             </div>
                             <div class="col-10">
                                 <h5 class="card-title">{{ $post->author->name }}</h5>
-                                <p class="card-text"><small class="text-muted">Posted on {{ $post->created_at->format('Y-m-d H:i')  }}</small>
+                                <p class="card-text"><small class="text-muted">Posted on
+                                        {{ $post->created_at->format('Y-m-d H:i') }}</small>
                                 </p>
                                 <p class="card-text">{{ $post->content }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <i class="fas fa-heart"></i> {{ $post->likes_count }} Likes
-                                        <button class="btn btn-sm btn-outline-primary">Like</button>
+                                        <i class="fas fa-heart"></i>
+                                        <a href="{{ route('posts.likes', $post->id) }}">
+                                            <span class="post-likes-count-{{$post->id}}">{{ $post->likes_count }} </span> Likes
+                                        </a>
+                                        {{-- <form action="{{ route('posts.like', $post->id) }}" method="POST" --}}
+                                            {{-- style="display: inline-block"> --}}
+                                            {{-- @csrf --}}
+                                            <button type="submit" class="btn btn-sm btn-outline-primary likePost" data-postid="{{$post->id}}">Like</button>
+                                        {{-- </form> --}}
                                     </div>
                                     <div>
                                         <i class="fas fa-comments"></i> {{ $post->comments_count }} Comments
-                                        <a href="{{route('posts.show', $post->id)}}" class="btn btn-sm btn-outline-primary">Comment</a>
+                                        <a href="{{ route('posts.show', $post->id) }}"
+                                            class="btn btn-sm btn-outline-primary">Comment</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @if ($post->user_id == Auth::user()->id)
-                        <div class="row text-center">
-                            <div class="col-2">
-                                <a href="{{route('posts.edit', $post->id)}}" class="btn btn-primary p-2">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form action="{{route('posts.delete', $post->id)}}" method="POST" style="display: inline-block" id="deletePost{{$post->id}}">
-                                    @csrf
-                                    <a class="btn btn-danger p-2" onclick="deletePost({{$post->id}})">
-                                        <i class="bi bi-trash3"></i>
+                            <div class="row text-center">
+                                <div class="col-2">
+                                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary p-2">
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
-                                </form>
-                           
+                                    <form action="{{ route('posts.delete', $post->id) }}" method="POST"
+                                        style="display: inline-block" id="deletePost{{ $post->id }}">
+                                        @csrf
+                                        <a class="btn btn-danger p-2" onclick="deletePost({{ $post->id }})">
+                                            <i class="bi bi-trash3"></i>
+                                        </a>
+                                    </form>
+
+                                </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
                     </div>
                 </div>
             </div>

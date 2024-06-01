@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Blade\FriendRequestController;
+use App\Http\Controllers\Blade\PostCommentController;
 use App\Http\Controllers\Blade\PostController;
+use App\Http\Controllers\Blade\PostLikeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Blade\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -36,4 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('delete-post/{id}', [PostController::class, 'delete'])->name('posts.delete');
     Route::get('post/{id}', [PostController::class, 'show'])->name('posts.show');
 
+    Route::post('post-like/{posId}', [PostLikeController::class, 'like'])->name('posts.like');
+    Route::get('post-likes/{posId}', [PostLikeController::class, 'likes'])->name('posts.likes');
+    Route::post('post-comment/{posId}', [PostCommentController::class, 'comment'])->name('posts.comment');
 });
