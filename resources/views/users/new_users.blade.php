@@ -6,12 +6,26 @@
     <div class="container">
         <div id="content" class="content p-0">
 
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="tab-content p-0">
-
+                    <div class="row">
+                        <div id="search-div" class="col-md-12">
+                            <form action="{{ route('new.users') }}" method="GET" class="form-inline">
+                                @csrf
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Search By Name</span>
+                                    </div>
+                                    <input type="text" name="search" class="form-control" value="{{ old('search') }}">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="tab-pane fade active show" id="profile-friends">
                         <div class="m-b-10"><b>New Friend List ({{ $users->count() }})</b></div>
-
                         <ul class="friend-list clearfix">
                             @foreach ($users as $user)
                                 <li>

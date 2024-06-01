@@ -71,11 +71,11 @@ class UserController extends Controller
         }
     }
 
-    public function newUsers()
+    public function newUsers(Request $request)
     {
         try {
             $userService = new UserServices();
-            $users = $userService->newUsers()['data'];
+            $users = $userService->newUsers($request)['data'];
             return view('users.new_users', compact('users'));
         } catch (\Exception $e) {
             return $e->getMessage();
