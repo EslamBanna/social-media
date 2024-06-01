@@ -1,50 +1,4 @@
 @foreach ($posts as $post)
-    {{-- <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
-                                <img src="{{ $post->author->photo }}" alt="Author Profile Picture"
-                                    class="img-fluid rounded-circle">
-                            </div>
-                            <div class="col-10">
-                                <h5 class="card-title">{{ $post->author->name }}</h5>
-                                <p class="card-text"><small class="text-muted">Posted on {{ $post->created_at }}</small>
-                                </p>
-                                <p class="card-text">{{ $post->content }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fas fa-heart"></i> {{ $post->likes_count }} Likes
-                                        <button class="btn btn-sm btn-outline-primary">Like</button>
-
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-comments"></i> {{ $post->comments_count }} Comments
-                                        <button class="btn btn-sm btn-outline-primary">Comment</button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @if ($post->user_id == Auth::user()->id)
-                            <div class="row text-center">
-                                <div class="col-2">
-                                    <a href="" class="btn btn-primary">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="" class="btn btn-danger">
-                                        <i class="bi bi-trash3"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -79,8 +33,8 @@
                                     class="img-fluid rounded-circle">
                             </div>
                             <div class="col-10">
-                              
-                                <p class="card-text"><small class="text-muted">Posted on {{ $post->created_at }}</small>
+                                <h5 class="card-title">{{ $post->author->name }}</h5>
+                                <p class="card-text"><small class="text-muted">Posted on {{ $post->created_at->format('Y-m-d H:i')  }}</small>
                                 </p>
                                 <p class="card-text">{{ $post->content }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -98,10 +52,10 @@
                         @if ($post->user_id == Auth::user()->id)
                         <div class="row text-center">
                             <div class="col-2">
-                                <a href="" class="btn btn-primary">
+                                <a href="" class="btn btn-primary p-2">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a href="" class="btn btn-danger">
+                                <a href="" class="btn btn-danger p-2">
                                     <i class="bi bi-trash3"></i>
                                 </a>
                             </div>
