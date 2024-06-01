@@ -44,7 +44,7 @@
                                     </div>
                                     <div>
                                         <i class="fas fa-comments"></i> {{ $post->comments_count }} Comments
-                                        <button class="btn btn-sm btn-outline-primary">Comment</button>
+                                        <a href="{{route('posts.show', $post->id)}}" class="btn btn-sm btn-outline-primary">Comment</a>
                                     </div>
                                 </div>
                             </div>
