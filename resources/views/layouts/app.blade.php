@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     @yield('css')
 </head>
 
@@ -62,10 +63,23 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="bi bi-chat-dots"></i>
-                                    {{-- <span id="messages_count"> 0</span> --}}
+                                <a class="nav-link" href="#" id="notification-toggle">
+                                    <i class="bi bi-bell-fill"></i>
+                                    <span id="notifications-count" class="text-danger">0</span>
                                 </a>
+                                <div class="dropdown-menu dropdown-menu-end" id="notification-list"
+                                    aria-labelledby="notification-toggle">
+                                    @php
+                                        $notifications = myNotifications();
+                                    @endphp
+                                    <ul>
+                                        @foreach ($notifications as $notification)
+                                            <li>{{ $notification->content }}</li>
+                                            <br>
+                                        @endforeach
+                                    </ul>
+                                    <!-- Notification list items go here -->
+                                </div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -76,10 +90,11 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{ route('home') }}">Home</a>
                                         <a class="dropdown-item" href="{{ route('post.create') }}">Publish New Post</a>
-                                        <a class="dropdown-item" href="{{route('new.users')}}">Add New Users</a>
-                                        <a class="dropdown-item" href="{{route('new.users.requests')}}">Friends Requests</a>
-                                        <a class="dropdown-item" href="{{route('my.requests')}}">My Requests</a>
-                                        
+                                        <a class="dropdown-item" href="{{ route('new.users') }}">Add New Users</a>
+                                        <a class="dropdown-item" href="{{ route('new.users.requests') }}">Friends
+                                            Requests</a>
+                                        <a class="dropdown-item" href="{{ route('my.requests') }}">My Requests</a>
+
                                         <a class="dropdown-item"
                                             href="{{ route('profile', Auth::user()->id) }}">Profile</a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
@@ -103,6 +118,21 @@
             @yield('content')
         </main>
     </div>
+    <script>
+        const notificationToggle = document.getElementById('notification-toggle');
+        const notificationList = document.getElementById('notification-list');
+
+        notificationToggle.addEventListener('click', (event) => {
+            event.preventDefault();
+            notificationList.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!notificationToggle.contains(event.target) && !notificationList.contains(event.target)) {
+                notificationList.classList.remove('show');
+            }
+        });
+    </script>
     @yield('script')
 </body>
 
