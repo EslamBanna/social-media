@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Blade;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\PostComment;
 use App\Services\PostServices;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function create()
-    {
-        return view('posts.create');
-    }
+    use GeneralTrait;
 
     public function store(Request $request)
     {
@@ -24,27 +22,15 @@ class PostController extends Controller
             $output = $postService->storePost($request);
             DB::commit();
             if (!$output['status']) {
-                return redirect()->back()->withInput()->withErrors($output['error']);
+                return $this->returnError(500, $output['error']);
             }
-            return redirect()->route('home');
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             DB::rollBack();
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
-    public function edit($postId)
-    {
-        try {
-            $post = Post::find($postId);
-            if (!$post) {
-                return redirect()->back();
-            }
-            return view('posts.edit', compact('post'));
-        } catch (\Exception $e) {
-            return view('general-error');
-        }
-    }
 
     public function update(Request $request, $postId)
     {
@@ -54,41 +40,47 @@ class PostController extends Controller
             $output = $postService->updatePost($request, $postId);
             DB::commit();
             if (!$output['status']) {
-                return redirect()->back()->withInput()->withErrors($output['error']);
+                return $this->returnError(500, $output['error']);
             }
-            return redirect()->route('home');
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             DB::rollBack();
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
-    public function delete($postId){
-        try{
+    public function delete($postId)
+    {
+        try {
             DB::beginTransaction();
             $postService = new PostServices();
             $output = $postService->deletePost($postId);
             DB::commit();
             if (!$output['status']) {
-                return redirect()->back();
+                return $this->returnError(500, $output['error']);
             }
-            return redirect()->route('home');
-        }catch(\Exception $e){
+            return $this->returnSuccessMessage('success');
+        } catch (\Exception $e) {
             DB::rollBack();
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
-    public function show($id){
-        try{
+    public function show($id)
+    {
+        try {
             $post = Post::withCount(['likes', 'comments'])->find($id);
             $comments = PostComment::where('post_id', $id)->get();
-            if(! $post){
-                return redirect()->back();
+            if (!$post) {
+                return $this->returnError(404, 'Post Not Found');
             }
-            return view('posts.show', compact('post', 'comments'));
-        }catch(\Exception $e){
-            return view('general-error');
+            $data = [
+                'post' => $post,
+                'comments' => $comments
+            ];
+            return $this->returnData('data', $data);
+        } catch (\Exception $e) {
+            return $this->returnError(500, $e->getMessage());
         }
     }
 }

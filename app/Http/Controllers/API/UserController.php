@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Blade;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -8,7 +8,6 @@ use App\Services\FriendServices;
 use App\Services\UserServices;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -21,15 +20,13 @@ class UserController extends Controller
         $friendServices = new FriendServices();
         $friends = $friendServices->frindes($id)['data'];
         if (!$user) {
-            return redirect()->back();
+            return $this->returnError(404, 'User Not Found');
         }
-        return view('profile.index', compact('user', 'friends'));
-    }
-
-    public function edit()
-    {
-        $user = Auth::user();
-        return view('profile.edit', compact('user'));
+        $data = [
+            'user' => $user,
+            'friends' => $friends
+        ];
+        return $this->returnData('data', $data);
     }
 
     public function update(Request $request)
@@ -38,21 +35,13 @@ class UserController extends Controller
             $userService = new UserServices();
             $output = $userService->update($request);
             if ($output['status'] == false) {
-                return redirect()->back()->withInput()->withErrors($output['error']);
+                return $this->returnError(500, $output['error']);
             }
-            $user = User::find(Auth::user()->id);
-            return redirect()->route('profile', $user->id);
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             DB::rollBack();
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
-    }
-
-
-    public function editPassword(Request $request)
-    {
-
-        return view('profile.update_password');
     }
 
     public function updatePassword(Request $request)
@@ -61,13 +50,12 @@ class UserController extends Controller
             $userService = new UserServices();
             $output = $userService->updatePassword($request);
             if ($output['status'] == false) {
-                return redirect()->back()->withInput()->withErrors($output['error']);
+                return $this->returnError(500, $output['error']);
             }
-            $user = User::find(Auth::user()->id);
-            return redirect()->route('profile', $user->id);
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             DB::rollBack();
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
@@ -76,9 +64,9 @@ class UserController extends Controller
         try {
             $userService = new UserServices();
             $users = $userService->newUsers($request)['data'];
-            return view('users.new_users', compact('users'));
+            return $this->returnData('data', $users);
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 }

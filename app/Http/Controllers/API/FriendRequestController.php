@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Blade;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Services\FriendServices;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class FriendRequestController extends Controller
 {
+    use GeneralTrait;
     public function sendRequest($userId)
     {
         try {
             $friendServices = new FriendServices();
             $friendServices->sendRequest($userId);
-            return redirect()->route('new.users');
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
@@ -24,9 +26,9 @@ class FriendRequestController extends Controller
         try {
             $friendServices = new FriendServices();
             $users = $friendServices->usersRequests()['data'];
-            return view('users.users_requests', compact('users'));
+            return $this->returnData('data', $users);
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
@@ -35,9 +37,9 @@ class FriendRequestController extends Controller
         try {
             $friendServices = new FriendServices();
             $users = $friendServices->myRequests()['data'];
-            return view('users.my_requests', compact('users'));
+            return $this->returnData('data', $users);
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
@@ -46,9 +48,9 @@ class FriendRequestController extends Controller
         try {
             $friendServices = new FriendServices();
             $friendServices->responseOnRequest($userId, $response);
-            return redirect()->route('new.users.requests');
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
@@ -56,9 +58,9 @@ class FriendRequestController extends Controller
         try {
             $friendServices = new FriendServices();
             $friendServices->removeRequest($userId);
-            return redirect()->route('my.requests');
+            return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 }

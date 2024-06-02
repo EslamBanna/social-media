@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Blade;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Services\PostInteractionServices;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class PostLikeController extends Controller
 {
+    use GeneralTrait;
     public function like($postId)
     {
         try {
             $postInteractionService = new PostInteractionServices();
             $output = $postInteractionService->like($postId);
-            return $output;
+            return $this->returnData('data', $output);
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 
@@ -23,9 +25,9 @@ class PostLikeController extends Controller
         try {
             $postInteractionService = new PostInteractionServices();
             $users = $postInteractionService->likes($postId)['data'];
-            return view('posts.likes', compact('users'));
+            return $this->returnData('data', $users);
         } catch (\Exception $e) {
-            return view('general-error');
+            return $this->returnError(500, $e->getMessage());
         }
     }
 }
