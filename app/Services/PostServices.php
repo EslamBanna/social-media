@@ -27,7 +27,10 @@ class PostServices
         $posts = Post::withCount(['likes', 'comments'])->whereIn('user_id', $users)->orderBy('id', 'DESC')->paginate(15);
         $response = [
             'status' => true,
-            'data' => $posts
+            'data' => $posts,
+            'code' => 200,
+            'error' => '',
+            'message' => ''
         ];
         return $response;
     }
@@ -41,7 +44,10 @@ class PostServices
         if ($validator->fails()) {
             $response = [
                 'status' => false,
-                'error' => $validator->errors()
+                'error' => $validator->errors(),
+                'data' => '',
+                'code' => 500,
+                'message' => ''
             ];
             return $response;
         }
@@ -61,7 +67,10 @@ class PostServices
         }
         $response = [
             'status' => true,
-            'data' => 'success'
+            'data' => 'success',
+            'code' => 200,
+            'error' => '',
+            'message' => 'success'
         ];
         return $response;
     }
@@ -74,7 +83,9 @@ class PostServices
             $response = [
                 'status' => false,
                 'code' => 404,
-                'error' => 'not found'
+                'error' => 'not found',
+                'data' => '',
+                'message' => 'success'
             ];
             return $response;
         }
@@ -84,7 +95,10 @@ class PostServices
         if ($validator->fails()) {
             $response = [
                 'status' => false,
-                'error' => $validator->errors()
+                'error' => $validator->errors(),
+                'data' => '',
+                'code' => 200,
+                'message' => ''
             ];
             return $response;
         }
@@ -104,7 +118,10 @@ class PostServices
         }
         $response = [
             'status' => true,
-            'data' => 'success'
+            'data' => '',
+            'code' => 200,
+            'error' => '',
+            'message' => 'success'
         ];
         return $response;
     }
@@ -117,7 +134,9 @@ class PostServices
             $response = [
                 'status' => false,
                 'code' => 404,
-                'error' => 'not found'
+                'error' => 'not found',
+                'data' => '',
+                'message' => ''
             ];
             return $response;
         }
@@ -125,7 +144,10 @@ class PostServices
         $post->delete();
         $response = [
             'status' => true,
-            'data' => 'success'
+            'data' => '',
+            'code' => 200,
+            'error' => '',
+            'message' => 'success'
         ];
         return $response;
     }

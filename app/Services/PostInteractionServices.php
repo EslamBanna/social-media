@@ -2,18 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\Friend;
-use App\Models\FriendRequest;
 use App\Models\Post;
 use App\Models\PostComment;
-use App\Models\PostImage;
 use App\Models\PostLike;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class PostInteractionServices
@@ -28,7 +23,9 @@ class PostInteractionServices
             $response = [
                 'status' => false,
                 'code' => 404,
-                'error' => 'Not Found'
+                'error' => 'Not Found',
+                'data' => '',
+                'message' => 'success'
             ];
             return $response;
         }
@@ -62,7 +59,9 @@ class PostInteractionServices
             $response = [
                 'status' => false,
                 'code' => 404,
-                'error' => 'Not Found'
+                'error' => 'Not Found',
+                'data' => '',
+                'message' => ''
             ];
             return $response;
         }
@@ -86,7 +85,9 @@ class PostInteractionServices
             $response = [
                 'status' => false,
                 'code' => 404,
-                'error' => 'Not Found'
+                'error' => 'Not Found',
+                'data' => '',
+                'message' => 'success'
             ];
             return $response;
         }
@@ -98,7 +99,8 @@ class PostInteractionServices
                 'status' => false,
                 'code' => 400,
                 'error' => $validator->errors(),
-                'data' => ''
+                'data' => '',
+                'message' => ''
             ];
             return $response;
         }
@@ -113,7 +115,8 @@ class PostInteractionServices
             'status' => true,
             'code' => 200,
             'error' => '',
-            'message' => 'success'
+            'message' => 'success',
+            'data' => ''
         ];
     }
 }

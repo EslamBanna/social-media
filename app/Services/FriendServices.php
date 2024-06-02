@@ -31,7 +31,10 @@ class FriendServices
 
         $response = [
             'status' => true,
-            'data' => 'success'
+            'data' => 'success',
+            'code' => 200,
+            'error' => '',
+            'message' => ''
         ];
         return $response;
     }
@@ -41,7 +44,10 @@ class FriendServices
         $users = User::whereIn('id', $users_ids)->paginate(15);
         $response = [
             'status' => true,
-            'data' => $users
+            'data' => $users,
+            'code' => 200,
+            'error' => '',
+            'message' => ''
         ];
         return $response;
     }
@@ -52,7 +58,10 @@ class FriendServices
         $users = User::whereIn('id', $users_ids)->paginate(15);
         $response = [
             'status' => true,
-            'data' => $users
+            'data' => $users,
+            'code' => 200,
+            'error' => '',
+            'message' => ''
         ];
         return $response;
     }
@@ -70,7 +79,10 @@ class FriendServices
         $friends = User::whereIn('id', $friends_ids)->paginate(15);
         $response = [
             'status' => true,
-            'data' => $friends
+            'data' => $friends,
+            'code' => 200,
+            'error' => '',
+            'message' => ''
         ];
         return $response;
     }
@@ -82,7 +94,10 @@ class FriendServices
         if (!$request) {
             $response = [
                 'status' => false,
-                'error' => 'request not found'
+                'error' => 'request not found',
+                'data' => 'success',
+                'code' => 404,
+                'message' => ''
             ];
             return $response;
         }
@@ -97,7 +112,10 @@ class FriendServices
         $request->delete();
         $response = [
             'status' => true,
-            'data' => 'success'
+            'data' => '',
+            'code' => 200,
+            'error' => '',
+            'message' => 'success'
         ];
         return $response;
     }
@@ -109,14 +127,20 @@ class FriendServices
         if (!$request) {
             $response = [
                 'status' => false,
-                'error' => 'request not found'
+                'error' => 'request not found',
+                'data' => '',
+                'code' => 404,
+                'message' => ''
             ];
             return $response;
         }
         $request->delete();
         $response = [
             'status' => true,
-            'data' => 'success'
+            'data' => '',
+            'code' => 200,
+            'error' => '',
+            'message' => 'success'
         ];
         return $response;
     }

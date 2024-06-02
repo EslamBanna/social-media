@@ -27,7 +27,10 @@ class UserServices
         if ($validator->fails()) {
             $response = [
                 'status' => false,
-                'error' => $validator->errors()
+                'error' => $validator->errors(),
+                'data' => '',
+                'code' => 500,
+                'message' => 'success'
             ];
             return $response;
         }
@@ -43,7 +46,10 @@ class UserServices
         DB::commit();
         $response = [
             'status' => true,
-            'error' => 'success'
+            'error' => '',
+            'data' => '',
+            'code' => 200,
+            'message' => 'success'
         ];
         return $response;
     }
@@ -60,7 +66,10 @@ class UserServices
         if ($validator->fails()) {
             $response = [
                 'status' => false,
-                'error' => $validator->errors()
+                'error' => $validator->errors(),
+                'data' => '',
+                'code' => 500,
+                'message' => ''
             ];
             return $response;
         }
@@ -79,7 +88,10 @@ class UserServices
         ]);
         $response = [
             'status' => true,
-            'error' => 'success'
+            'error' => '',
+            'data' => '',
+            'code' => 200,
+            'message' => 'success'
         ];
         return $response;
     }
@@ -98,7 +110,10 @@ class UserServices
         $users = $users->paginate(15);
         $response = [
             'status' => true,
-            'data' => $users
+            'data' => $users,
+            'code' => 200,
+            'error' => '',
+            'message' => 'success'
         ];
         return $response;
     }
