@@ -22,7 +22,7 @@ class PostController extends Controller
             $output = $postService->storePost($request);
             DB::commit();
             if (!$output['status']) {
-                return $this->returnError(500, $output['error']);
+                return $this->returnError($output['code'], $output['error']);
             }
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
@@ -40,7 +40,7 @@ class PostController extends Controller
             $output = $postService->updatePost($request, $postId);
             DB::commit();
             if (!$output['status']) {
-                return $this->returnError(500, $output['error']);
+                return $this->returnError($output['code'], $output['error']);
             }
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
@@ -57,7 +57,7 @@ class PostController extends Controller
             $output = $postService->deletePost($postId);
             DB::commit();
             if (!$output['status']) {
-                return $this->returnError(500, $output['error']);
+                return $this->returnError($output['code'], $output['error']);
             }
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {

@@ -35,7 +35,7 @@ class UserController extends Controller
             $userService = new UserServices();
             $output = $userService->update($request);
             if ($output['status'] == false) {
-                return $this->returnError(500, $output['error']);
+                return $this->returnError($output['code'], $output['error']);
             }
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
@@ -50,7 +50,7 @@ class UserController extends Controller
             $userService = new UserServices();
             $output = $userService->updatePassword($request);
             if ($output['status'] == false) {
-                return $this->returnError(500, $output['error']);
+                return $this->returnError($output['code'], $output['error']);
             }
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
