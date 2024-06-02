@@ -18,7 +18,22 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    @yield('css')
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script>
+      
+          // Enable pusher logging - don't include this in production
+          Pusher.logToConsole = true;
+      
+          var pusher = new Pusher('80615a6410e7bc4afe9d', {
+            cluster: 'eu'
+          });
+      
+          var channel = pusher.subscribe('my-channel');
+          channel.bind('my-event', function(data) {
+            alert(JSON.stringify(data));
+          });
+        </script>
+        @yield('css')
 </head>
 
 <body>

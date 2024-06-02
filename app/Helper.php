@@ -2,7 +2,7 @@
 
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
-use App\Events\SendNotification;
+use App\Events\NotificationEvent;
 function addNotification($target_user_id, $user_id = null, $post_id = null, $content, $notification_type)
 {
     Notification::create([
@@ -14,7 +14,7 @@ function addNotification($target_user_id, $user_id = null, $post_id = null, $con
         'shown' => 0
     ]);
     // fire event;
-    event(new SendNotification('hello world'));
+    event(new NotificationEvent('hello world'));
 }
 
 function myNotifications()

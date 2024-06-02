@@ -7,13 +7,24 @@ use App\Http\Controllers\API\PostCommentController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\PostLikeController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\AuthController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register',  [AuthController::class, 'register']);
+Route::post('send-otp',  [AuthController::class, 'sendOTP']);
+Route::post('verify-email',  [AuthController::class, 'verifyEmail']);
+Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+Route::get('check-forget-password-token',  [AuthController::class, 'checkForgetPasswordToken']);
+Route::post('change-password',  [AuthController::class, 'changePassword']);
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('me',  [AuthController::class, 'me']);
+    Route::post('update-password', [AuthController::class, 'updatePassword']);
+
     Route::get('profile/{id}', [UserController::class, 'index'])->name('profile');
     Route::post('profile/update', [UserController::class, 'update'])->name('profile.update');
     Route::post('profile/password/update', [UserController::class, 'updatePassword'])->name('profile.update.password');
